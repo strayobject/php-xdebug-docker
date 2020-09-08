@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+    app:
+        build:
+            context: docker/app
+            dockerfile: Dockerfile
+            args:
+                USER_ID: ${USER_ID:-0}
+                GROUP_ID: ${GROUP_ID:-0}
+        env_file:
+            - ./docker/app/.env
+        volumes:
+            - '.:/var/www/html/:delegated'
+
+    app_xdebug:
+        build:
+            context: docker/app
+            dockerfile: Dockerfile_xdebug
+            args:
+                USER_ID: ${USER_ID:-0}
+                GROUP_ID: ${GROUP_ID:-0}
+        env_file:
+            - ./docker/app/.env
+        volumes:
+            - '.:/var/www/html/:delegated'
+
+    nginx:
+        image: nginx
+        volumes:
+            - '.:/var/www/html/'
+            - './docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf'
+        ports:
+            - '127.0.0.1:80:80'
+
+networks:
+    default:
+        external:
+            name: 'pxd-docker'
