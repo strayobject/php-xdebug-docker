@@ -30,8 +30,15 @@ services:
         volumes:
             - '.:/var/www/html/'
             - './docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf'
+            - './docker/nginx/config/ssl.conf:/etc/nginx/config/ssl.conf'
+            - './docker/nginx/config/ssl-params.conf:/etc/nginx/config/ssl-params.conf'
+            - './docker/nginx/config/gzip.conf:/etc/nginx/config/gzip.conf'
+            - './docker/nginx/config/pki/dhparam.pem:/etc/nginx/pki/dhparam.pem'
+            - './docker/nginx/config/pki/insecure.crt:/etc/nginx/pki/certs/insecure.crt'
+            - './docker/nginx/config/pki/insecure.key:/etc/nginx/pki/private/insecure.key'
         ports:
             - '127.0.0.1:80:80'
+            - '127.0.0.1:443:443'
 
 networks:
     default:
